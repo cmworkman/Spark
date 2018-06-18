@@ -16,6 +16,5 @@ class HDFS_Reader(ss: SparkSession, filePath: String, schema: StructType){
       .option("header", true)
       .schema(schema)
       .load(filePath)
-    //"wasb:///HDFS/dbo.STAGING_CLAIMLINE.bcp"
   }
 }

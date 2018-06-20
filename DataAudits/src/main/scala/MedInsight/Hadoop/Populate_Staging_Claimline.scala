@@ -19,7 +19,7 @@ class Populate_Staging_Claimline (ss: SparkSession, miConfig: MIConfig, auditDF 
         bsDF("CL_DATA_SRC"),
         bsDF("FROM_DATE"),
         auditDF("SVYEARMO"),
-        auditDF("row_type"),
+        auditDF("row_type").as("ROW_TYPE"),
         bsDF("CLAIM_SFX_OR_PARENT"),
         bsDF("SV_LINE"),
         bsDF("FORM_TYPE"),

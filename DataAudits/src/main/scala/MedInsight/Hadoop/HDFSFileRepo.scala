@@ -17,6 +17,13 @@ trait ReferenceData extends HDFS {
 trait StagingData extends HDFS {
   def sloc                  = baseLoc + "StagingData/"
   def STAGING_CLAIMLINE     = sloc + "STAGING_CLAIMLINE.bcp"
+  def STAGING_ENROLLMENT    = sloc + "STAGING_ENROLLMENT.bcp"
+  def STAGING_PREMIUM       = sloc + "STAGING_PREMIUM.bcp"
+  def STAGING_GROUP         = sloc + "STAGING_GROUP.bcp"
+  def STAGING_CAPITATION    = sloc + "STAGING_CAPITATION.bcp"
+  def STAGING_MEMBER        = sloc + "STAGING_MEMBER.bcp"
+  def STAGING_PROVIDER      = sloc + "STAGING_PROVIDER.bcp"
+  def MI_DIMENSIONS         = sloc + "MI_DIMENSIONS.bcp"
 }
 
 class HDFSFileRepo extends HDFS with ReferenceData with StagingData {}

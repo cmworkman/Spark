@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="DataAudits:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/DataAudits_jar</output-path>
+    <root id="archive" name="DataAudits.jar">
+      <element id="module-output" name="DataAudits" />
+    </root>
+  </artifact>
+</component>

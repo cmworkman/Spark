@@ -40,7 +40,7 @@ class Populate_Audit_B_Claims_RowType(ss: SparkSession, miConfig: MIConfig, base
     val outputDF = bcDF.groupBy(bcDF("DATA_SOURCE"), bcDF("CLAIM_ID"))
       .agg(max(bcDF("member_qual")).as("MEMBER_QUAL"), max(bcDF("member_id")).as("MEMBER_ID"),
         sum(bcDF("AMT_BILLED")).as("AMT_BILLED"), sum(bcDF("AMT_PAID")).as("AMT_PAID"), sum(bcDF("AMT_ALLOWED")).as("AMT_ALLOWED"), sum(bcDF("AMT_DEDUCT")).as("AMT_DEDUCT"), sum(bcDF("AMT_COPAY")).as("AMT_COPAY"), sum(bcDF("AMT_COINS")).as("AMT_COINS"), sum(bcDF("AMT_COB")).as("AMT_COB"),
-        min(bcDF("ROW_TYPE")).as("ROW_TYPE"), sum(bcDF("SVYEARMO")).as("SVYEARMO"),
+        min(bcDF("ROW_TYPE")).as("ROW_TYPE"), min(bcDF("SVYEARMO")).as("SVYEARMO"),
         count(bcDF("ROW_TYPE")).as("lines")
       )
 

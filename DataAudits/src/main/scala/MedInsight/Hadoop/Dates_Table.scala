@@ -6,7 +6,7 @@ import org.apache.spark.sql.types.{DataTypes, StructField, StructType}
   * Created by christopher.workman on 6/17/2018.
   */
 class Dates_Table {
-  val DATES  = StructField("DATES", DataTypes.StringType)
+  val DATES  = StructField("DATES", DataTypes.DateType)
   val YEARS  = StructField("YEARS", DataTypes.LongType)
   val MONTHS = StructField("MONTHS", DataTypes.StringType)
   val MONTH_NAME  = StructField("MONTH_NAME", DataTypes.StringType)

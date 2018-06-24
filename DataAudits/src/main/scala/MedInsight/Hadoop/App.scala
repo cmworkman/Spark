@@ -47,7 +47,9 @@ object App {
 
 
     val Month_Count_By_DataSource_In_Audit = new Populate_Month_Count_By_DataSource_In_Audit(sparkSession, miConfig, Audit_B_Member_Month_Enrollment_DF).populate()
-
+    val Audit_Member_Years = new Audit_Member_Years_Populate(sparkSession, miConfig, Audit_B_Member_Month_Enrollment_DF).populate()
+    val Audit_Claim_Lines  = new Audit_Claim_Lines_Populate(sparkSession, miConfig, Audit_B_Claims_RowType_DF).populate()
+    val Audit_Bill_Provider = new Audit_Bill_Provider_Populate(sparkSession, miConfig, Staging_Claimline_DF).populate()
 
   }
 

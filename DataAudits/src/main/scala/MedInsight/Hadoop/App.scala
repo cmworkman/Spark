@@ -20,6 +20,7 @@ object App {
     val Base_Staging_Group_DF =      new HDFS_Reader(sparkSession, fileRepo.STAGING_GROUP,      new Staging_Group_Table().schema).read()
     val Base_Staging_Provider_DF =   new HDFS_Reader(sparkSession, fileRepo.STAGING_PROVIDER,   new Staging_Provider_Table().schema).read()
     val Base_Staging_Capitation_DF = new HDFS_Reader(sparkSession, fileRepo.STAGING_CAPITATION, new Staging_Capitation_Table().schema).read()
+    val Base_Staging_Member_DF     = new HDFS_Reader(sparkSession, fileRepo.STAGING_MEMBER,     new Staging_Member_Table().schema).read()
 
 
 
@@ -40,7 +41,13 @@ object App {
     val Claims_Summary_Enr_DF     = new Populate_Claims_Summary_For_Enrollment(sparkSession, miConfig, Claims_Summary_DF).populate()
 
 
-    val Audit_B_Member_Month_Enrollment_DF = new Populate_Audit_B_Member_Month_Enrollment_Table(sparkSession, miConfig, Base_Staging_Enrollment_DF, Claims_Summary_Enr_DF, Dates_DF).populate()
+    val Audit_B_Member_Month_Enrollment_DF = new Populate_Audit_B_Member_Month_Enrollment_Table(sparkSession, miConfig, Base_Staging_Enrollment_DF, Claims_Summary_Enr_DF, Dates_DF, Base_Staging_Member_DF).populate()
+    val Claims_Summary_W_SID_DF  = new Update_SubscriberID_For_ClaimSummary(sparkSession, miConfig, Audit_B_Member_Month_Enrollment_DF, Claims_Summary_DF).populate()
+
+
+
+    //val Month_Count_By_DataSource_In_Audit = new Update_SubscriberID_For_ClaimSummary(sparkSession, miConfig, Audit_B_Member_Month_Enrollment_DF, Claims_Summary_W_SID_DF).populate()
+
 
   }
 

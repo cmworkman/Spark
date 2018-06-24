@@ -1,15 +1,16 @@
 package MedInsight.Hadoop
 
 import org.apache.spark.sql.{DataFrame, SparkSession}
-import org.apache.spark.sql.functions._
-import org.apache.spark.sql.types.{DataTypes}
+import org.apache.spark.sql.functions.{coalesce, _}
+import org.apache.spark.sql.types.DataTypes
 /**
   * Created by christopher.workman on 6/20/2018.
   */
-class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig: MIConfig, stagingEnrollmentDF: DataFrame, claimSummaryEnrollment: DataFrame, datesDF: DataFrame){
+class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig: MIConfig, stagingEnrollmentDF: DataFrame, claimSummaryEnrollmentDF: DataFrame, datesDF: DataFrame, stagingMemberDF : DataFrame){
   def populate() : DataFrame = {
     val seDF  = stagingEnrollmentDF
-    val cseDF = claimSummaryEnrollment
+    val cseDF = claimSummaryEnrollmentDF
+    val smDF  = stagingMemberDF
 
     // get the average claimline count by Data Source
     val avgClaimCountByDataSourceDF = cseDF.groupBy(cseDF("CL_DATA_SRC"))
@@ -33,17 +34,51 @@ class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig
 
 
 
-    val outputDF = seDF.join(datesDF,datesDF("DATES") >= seDF("EFF_DATE") && datesDF("DATES") <= seDF("TERM_DATE") && datesDF("DAY_OF_MONTH") <=> 15 ,"inner")
-                .join(dateRangeByDataSource,(seDF("EN_DATA_SRC") <=>  dateRangeByDataSource("CL_DATA_SRC") || seDF("EN_DATA_SRC") <=> "*" || dateRangeByDataSource("CL_DATA_SRC") <=> "*")
-                  && (datesDF("YEAR_MO").cast(DataTypes.StringType) >= concat( year(dateRangeByDataSource("MIN_YEARMO")),month(dateRangeByDataSource("MIN_YEARMO")) ) &&
-                      datesDF("YEAR_MO").cast(DataTypes.StringType) <= concat( year(dateRangeByDataSource("MAX_YEARMO")),month(dateRangeByDataSource("MAX_YEARMO")) ) )
-                  ,"inner")
-                    .groupBy(seDF("EN_DATA_SRC"),seDF("MEMBER_ID"),seDF("SUBSCRIBER_ID"),datesDF("YEAR_MO"),datesDF("FIRST_DATE_IN_MONTH"),datesDF("LAST_DATE_IN_MONTH"),coalesce(seDF("MEMBER_QUAL"),lit("''"))
-                    )
-                    .agg(max(seDF("MI_USER_DIM_01_")),max(seDF("MI_USER_DIM_02_")),max(seDF("MI_USER_DIM_03_")),max(seDF("MI_USER_DIM_04_")),max(seDF("MI_USER_DIM_05_")),
-                      max(seDF("MI_USER_DIM_06_")),max(seDF("MI_USER_DIM_07_")),max(seDF("MI_USER_DIM_08_")),max(seDF("MI_USER_DIM_09_")),max(seDF("MI_USER_DIM_10_")),
-                      max(seDF("PAYER_TYPE")),max(seDF("GRP_ID")),max(seDF("PCP_PROV"))
-                      )
+    val outputPreMemberDF = seDF.join(datesDF,datesDF("DATES") >= seDF("EFF_DATE") && datesDF("DATES") <= seDF("TERM_DATE") && datesDF("DAY_OF_MONTH") <=> 15 ,"inner")
+                       .join(dateRangeByDataSource,(seDF("EN_DATA_SRC") <=>  dateRangeByDataSource("CL_DATA_SRC") || seDF("EN_DATA_SRC") <=> "*" || dateRangeByDataSource("CL_DATA_SRC") <=> "*")
+                          && (datesDF("YEAR_MO").cast(DataTypes.StringType) >= concat( year(dateRangeByDataSource("MIN_YEARMO")),month(dateRangeByDataSource("MIN_YEARMO")) ) &&
+                          datesDF("YEAR_MO").cast(DataTypes.StringType) <= concat( year(dateRangeByDataSource("MAX_YEARMO")),month(dateRangeByDataSource("MAX_YEARMO")) ) )
+                        ,"inner")
+                       .groupBy(seDF("EN_DATA_SRC"),seDF("MEMBER_ID"),seDF("EFF_DATE"),seDF("SUBSCRIBER_ID"),datesDF("YEAR_MO"),datesDF("FIRST_DATE_IN_MONTH"),datesDF("LAST_DATE_IN_MONTH"),coalesce(seDF("MEMBER_QUAL"),lit("''")).as("MEMBER_QUAL")
+                        )
+                       .agg(max(seDF("MI_USER_DIM_01_")).as("MI_USER_DIM_01_"),max(seDF("MI_USER_DIM_02_")).as("MI_USER_DIM_02_"),
+                         max(seDF("MI_USER_DIM_03_")).as("MI_USER_DIM_03_"),max(seDF("MI_USER_DIM_04_")).as("MI_USER_DIM_04_"),
+                         max(seDF("MI_USER_DIM_05_")).as("MI_USER_DIM_05_"), max(seDF("MI_USER_DIM_06_")).as("MI_USER_DIM_06_"),
+                         max(seDF("MI_USER_DIM_07_")).as("MI_USER_DIM_07_"),max(seDF("MI_USER_DIM_08_")).as("MI_USER_DIM_08_"),
+                         max(seDF("MI_USER_DIM_09_")).as("MI_USER_DIM_09_"),max(seDF("MI_USER_DIM_10_")).as("MI_USER_DIM_10_"),
+                         max(seDF("PAYER_TYPE")).as("PAYER_TYPE"),max(seDF("GRP_ID")).as("GRP_ID"),max(seDF("PCP_PROV")).as("PCP_PROV")
+                       )
+
+
+    val opmDF = outputPreMemberDF
+
+    val outputDF = opmDF.join(smDF, smDF("MEMBER_ID") <=> opmDF("MEMBER_ID") &&
+                          (coalesce(smDF("MEMBER_QUAL"), lit("''")) == coalesce(opmDF("MEMBER_QUAL"), lit("''"))) &&
+                          (opmDF("EFF_DATE") >= coalesce(smDF("MEM_START_DATE"), to_date(lit("1900-01-01"))) && opmDF("EFF_DATE") <= coalesce(smDF("MEM_START_DATE"), to_date(lit("2099-12-31"))) ) &&
+                          (smDF("MEM_DATA_SRC") == lit("'*'") || opmDF("EN_DATA_SRC") == lit("'*'") || (smDF("MEM_DATA_SRC") == opmDF("EN_DATA_SRC")))
+                        )
+        .select(smDF("MEM_GENDER"), smDF("MEM_DOB"), smDF("MEM_LNAME"), smDF("MEM_FNAME"),
+                opmDF("EN_DATA_SRC"),
+                opmDF("MEMBER_ID"),
+                opmDF("SUBSCRIBER_ID"),
+                opmDF("YEAR_MO"),
+                opmDF("FIRST_DATE_IN_MONTH"),
+                opmDF("LAST_DATE_IN_MONTH"),
+                opmDF("MEMBER_QUAL"),
+                opmDF("MI_USER_DIM_01_"),
+                opmDF("MI_USER_DIM_02_"),
+                opmDF("MI_USER_DIM_03_"),
+                opmDF("MI_USER_DIM_04_"),
+                opmDF("MI_USER_DIM_05_"),
+                opmDF("MI_USER_DIM_06_"),
+                opmDF("MI_USER_DIM_07_"),
+                opmDF("MI_USER_DIM_08_"),
+                opmDF("MI_USER_DIM_09_"),
+                opmDF("MI_USER_DIM_10_"),
+                opmDF("PAYER_TYPE"),
+                opmDF("GRP_ID"),
+                opmDF("PCP_PROV")
+        )
 
 
 

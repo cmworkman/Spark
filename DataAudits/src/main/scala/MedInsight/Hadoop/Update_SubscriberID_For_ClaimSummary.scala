@@ -19,7 +19,12 @@ class Update_SubscriberID_For_ClaimSummary (ss: SparkSession, miConfig: MIConfig
                            ammDF("SUBSCRIBER_ID"),
                            csDF("CL_DATA_SRC"), csDF("CLAIM_ID"), csDF("SVYEARMO"), csDF("ROW_TYPE"), csDF("SV_STAT"), csDF("DIS_STAT"),
                            csDF("FROM_DATE"), csDF("ADM_DATE"), csDF("TO_DATE"), csDF("DIS_DATE"), csDF("MEMBER_ID"), csDF("BILL_PROV"),
-                           csDF("CLAIM_IN_NETWORK"), csDF("MEMBER_QUAL")
+                           csDF("CLAIM_IN_NETWORK"), csDF("MEMBER_QUAL"), csDF("CLAIMLINE_COUNT"), csDF("AMT_PAID"), csDF("AMT_PAID"),
+                           csDF("AMT_PAID"),
+                           csDF("AMT_BILLED"),
+                           csDF("AMT_ALLOWED"),
+                           csDF("AMT_COB"),
+                           csDF("MEMBER_PAID")
                          )
 
     return outputDF

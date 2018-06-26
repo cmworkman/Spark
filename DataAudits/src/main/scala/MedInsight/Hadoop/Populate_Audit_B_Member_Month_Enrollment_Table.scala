@@ -49,13 +49,15 @@ class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig
                          max(seDF("PAYER_TYPE")).as("PAYER_TYPE"),max(seDF("GRP_ID")).as("GRP_ID"),max(seDF("PCP_PROV")).as("PCP_PROV")
                        )
 
+    println("outputPreMemberDF Schema:" + outputPreMemberDF.printSchema())
+    println("stagingMemberDF Schema:" + stagingMemberDF.printSchema())
 
     val opmDF = outputPreMemberDF
 
     val outputDF = opmDF.join(smDF, smDF("MEMBER_ID") <=> opmDF("MEMBER_ID") &&
-                          (coalesce(smDF("MEMBER_QUAL"), lit("''")) == coalesce(opmDF("MEMBER_QUAL"), lit("''"))) &&
+                          (coalesce(smDF("MEMBER_QUAL"), lit("''")) === coalesce(opmDF("MEMBER_QUAL"), lit("''"))) &&
                           (opmDF("EFF_DATE") >= coalesce(smDF("MEM_START_DATE"), to_date(lit("1900-01-01"))) && opmDF("EFF_DATE") <= coalesce(smDF("MEM_START_DATE"), to_date(lit("2099-12-31"))) ) &&
-                          (smDF("MEM_DATA_SRC") == lit("'*'") || opmDF("EN_DATA_SRC") == lit("'*'") || (smDF("MEM_DATA_SRC") == opmDF("EN_DATA_SRC")))
+                          (smDF("MEM_DATA_SRC") === lit("'*'") || opmDF("EN_DATA_SRC") === lit("'*'") || (smDF("MEM_DATA_SRC") === opmDF("EN_DATA_SRC"))), "left_outer"
                         )
         .select(smDF("MEM_GENDER"), smDF("MEM_DOB"), smDF("MEM_LNAME"), smDF("MEM_FNAME"),
                 opmDF("EN_DATA_SRC"),

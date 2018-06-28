@@ -13,7 +13,7 @@ class HDFS_Reader(ss: SparkSession, filePath: String, schema: StructType){
 
     return ss.read.format("csv")
       .option("sep", "|")
-      .option("header", true)
+      .option("header", false)
       .schema(schema)
       .load(filePath)
   }

@@ -13,6 +13,7 @@ class Update_SubscriberID_For_ClaimSummary (ss: SparkSession, miConfig: MIConfig
     val csDF = claimSummary
 
 
+
     // I'm making a big assumption here with SUBSCRIBER_ID.  The logic is more complicated in dqa.PopulateProcessingTables (though necessarily?)
     val outputDF = csDF.join(ammDF, ammDF("MEMBER_ID") <=> csDF("MEMBER_ID") && ammDF("MEMBER_QUAL") <=> csDF("MEMBER_QUAL") && ammDF("EN_DATA_SRC") <=> csDF("CL_DATA_SRC"), "left_outer")
                          .select(
@@ -29,4 +30,6 @@ class Update_SubscriberID_For_ClaimSummary (ss: SparkSession, miConfig: MIConfig
 
     return outputDF
   }
+
+
 }

@@ -10,9 +10,9 @@ class Populate_Staging_Claimline (ss: SparkSession, miConfig: MIConfig, auditDF 
     val bsDF = baseStagingClaimlinDF
 
     val outputDF = bsDF.join(  auditDF,
-                               bsDF("CLAIM_ID")       <=> auditDF("CLAIM_ID")
-                               && bsDF("CL_DATA_SRC") <=> auditDF("DATA_SOURCE")
-                               && bsDF("FROM_DATE")   <=> auditDF("SVYEARMO"),
+                               bsDF("CLAIM_ID")       === auditDF("CLAIM_ID")
+                               && bsDF("CL_DATA_SRC") === auditDF("DATA_SOURCE")
+                               && bsDF("FROM_DATE")   === auditDF("SVYEARMO"),
                                "left_outer"
        )
       .select( bsDF("CLAIM_ID"),
@@ -85,7 +85,7 @@ class Populate_Staging_Claimline (ss: SparkSession, miConfig: MIConfig, auditDF 
         bsDF("NDC"))
 
 
-    println("Sample output for PopulateStagingClaimline " + outputDF.show(10))
-    return outputDF
+    //println("Sample output for PopulateStagingClaimline " + outputDF.show(10))
+    return outputDF.persist()
   }
 }

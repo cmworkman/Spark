@@ -44,7 +44,6 @@ class Populate_Audit_B_Claims_RowType(ss: SparkSession, miConfig: MIConfig, base
         count(bcDF("ROW_TYPE")).as("LINES")
       )
 
-    println("Sample output for  Audit_B_Claims_RowType" + outputDF.show(10))
     return outputDF
 
   }

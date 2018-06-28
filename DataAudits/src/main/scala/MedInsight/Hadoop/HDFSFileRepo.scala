@@ -10,7 +10,7 @@ trait HDFS {
 
 trait ReferenceData extends HDFS {
   def rloc              = baseLoc + "ReferenceDatasets/"
-  def RFT_DATES         = rloc + "RFT_DATES.bcp"
+  def RFT_DATES         = rloc + "DATES_TEST.bcp"
   def RFT_DIS_STAT      = rloc + "RFT_DIS_STAT.bcp"
   def RFT_ICD9_DIAG     = rloc + "RFT_ICD9_DIAG.bcp"
   def RFT_ICD9_PROC     = rloc + "RFT_ICD9_PROC.bcp"

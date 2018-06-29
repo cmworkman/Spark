@@ -32,12 +32,13 @@ class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig
                   .agg(max(clcwDF("YEAR_MO")).as("MAX_YEARMO"), max(add_months(clcwDF("YEAR_MO"), -47)).as("MIN_YEARMO") )
 
 
+    // get dimensionality for every member's member month (jesus christ)
     val outputPreMemberDF = seDF.join(datesDF,datesDF("DATES") >= seDF("EFF_DATE") && datesDF("DATES") <= seDF("TERM_DATE") && datesDF("DAY_OF_MONTH") === lit(15) ,"inner")
                        .join(dateRangeByDataSource,(seDF("EN_DATA_SRC") ===  dateRangeByDataSource("CL_DATA_SRC") || seDF("EN_DATA_SRC") === "*" || dateRangeByDataSource("CL_DATA_SRC") === "*")
                           && (datesDF("YEAR_MO").cast(DataTypes.StringType) >= concat( year(dateRangeByDataSource("MIN_YEARMO").cast(DataTypes.StringType)),month(dateRangeByDataSource("MIN_YEARMO").cast(DataTypes.StringType)) ) &&
                           datesDF("YEAR_MO").cast(DataTypes.StringType) <= concat( year(dateRangeByDataSource("MAX_YEARMO").cast(DataTypes.StringType)),month(dateRangeByDataSource("MAX_YEARMO").cast(DataTypes.StringType)) ) )
                         ,"inner")
-                       .groupBy(seDF("EN_DATA_SRC"),seDF("MEMBER_ID"),seDF("EFF_DATE"),seDF("SUBSCRIBER_ID"),datesDF("YEAR_MO"),datesDF("FIRST_DATE_IN_MONTH"),datesDF("LAST_DATE_IN_MONTH"),coalesce(seDF("MEMBER_QUAL"),lit("''")).as("MEMBER_QUAL")
+                       .groupBy(seDF("EN_DATA_SRC"),seDF("MEMBER_ID"),seDF("EFF_DATE"),seDF("SUBSCRIBER_ID"),datesDF("YEAR_MO"),datesDF("FIRST_DATE_IN_MONTH"),datesDF("LAST_DATE_IN_MONTH"),coalesce(seDF("MEMBER_QUAL"),lit("")).as("MEMBER_QUAL")
                         )
                        .agg(max(seDF("MI_USER_DIM_01_")).as("MI_USER_DIM_01_"),max(seDF("MI_USER_DIM_02_")).as("MI_USER_DIM_02_"),
                          max(seDF("MI_USER_DIM_03_")).as("MI_USER_DIM_03_"),max(seDF("MI_USER_DIM_04_")).as("MI_USER_DIM_04_"),
@@ -50,7 +51,7 @@ class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig
     val opmDF = outputPreMemberDF
 
     val outputDF = opmDF.join(smDF, smDF("MEMBER_ID") === opmDF("MEMBER_ID") &&
-                          (coalesce(smDF("MEMBER_QUAL"), lit("''")) === coalesce(opmDF("MEMBER_QUAL"), lit("''"))) &&
+                          (coalesce(smDF("MEMBER_QUAL"), lit("")) === coalesce(opmDF("MEMBER_QUAL"), lit(""))) &&
                           (opmDF("EFF_DATE") >= coalesce(smDF("MEM_START_DATE"), to_date(lit("1900-01-01"))) && opmDF("EFF_DATE") <= coalesce(smDF("MEM_START_DATE"), to_date(lit("2099-12-31"))) ) &&
                           (smDF("MEM_DATA_SRC") === lit("'*'") || opmDF("EN_DATA_SRC") === lit("'*'") || (smDF("MEM_DATA_SRC") === opmDF("EN_DATA_SRC"))), "left_outer"
                         )

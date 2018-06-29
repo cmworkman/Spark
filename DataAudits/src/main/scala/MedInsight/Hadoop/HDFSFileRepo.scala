@@ -16,8 +16,8 @@ trait ReferenceData extends HDFS {
   def RFT_ICD9_PROC     = rloc + "RFT_ICD9_PROC.bcp"
   def RFT_ICD10_DIAG    = rloc + "RFT_ICD10_DIAG.bcp"
   def RFT_ICD10_PROC    = rloc + "RFT_ICD10_PROC.bcp"
-  def RFT_PAYER_LOB     = rloc + "RFT_PAYER_LOB.bcp"
-  def RFT_PAYER_TYPE    = rloc + "RFT_PAYER_TYPE.bcp"
+  def RFT_PAYER_LOB     = rloc + "PAYER_LOB.bcp"
+  def RFT_PAYER_TYPE    = rloc + "PAYER_TYPE.bcp"
   def RFT_PROC_CODE     = rloc + "RFT_PROC_CODE.bcp"
   def RFT_REV_CODE      = rloc + "RFT_REV_CODE.bcp"
 

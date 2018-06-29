@@ -1,6 +1,6 @@
 package MedInsight.Hadoop
 
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 import org.apache.spark.sql.functions.{when, _}
 import org.apache.spark.sql.types.DataTypes
 
@@ -10,28 +10,39 @@ import org.apache.spark.sql.types.DataTypes
   */
 class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF: DataFrame, payerTypeDF: DataFrame,
                                 auditBMMEnrollmentDF: DataFrame, claimSummaryDF: DataFrame) {
+
   def populate() : DataFrame = {
     val lobDF = payerLobDF
     val ptDF = payerTypeDF
     val abmDF = auditBMMEnrollmentDF
     val csDF = claimSummaryDF
 
-    val consPayerDF = lobDF.join(ptDF, lobDF("PAYER_LOB_KEY") <=> ptDF("PAYER_LOB_KEY"), "left_outer")
+    val consPayerDF = lobDF.join(ptDF, lobDF("PAYER_LOB_KEY") === ptDF("PAYER_LOB_KEY"), "left_outer")
       .select(ptDF("PAYER_TYPE"), lobDF("PAYER_LOB")).distinct()
 
+/*    println("lotDF Totals:" + lobDF.show(10) )
+    println("ptDF Totals:" + ptDF.show(10) )
+    println("consPayer Totals:" + consPayerDF.show(10) )*/
+    println("ABM Totals:" + abmDF.show(10) )
+    //return consPayerDF
 
-    val enrollTotals = abmDF.join(consPayerDF, consPayerDF("PAYER_TYPE") <=> abmDF("PAYER_TYPE"), "left_outer")
+
+    val enrollTotals = abmDF.join(consPayerDF, consPayerDF("PAYER_TYPE") === abmDF("PAYER_TYPE"), "left_outer")
       .groupBy(abmDF("EN_DATA_SRC").as("DATA_SOURCE"), abmDF("YEAR_MO"),
         consPayerDF("PAYER_LOB"),
         coalesce(consPayerDF("PAYER_LOB"), lit("(unknown)"))
       )
       .agg(sum(lit(1)).as("MEMBER_MONTHS"))
 
+    println("Enroll Totals:" + enrollTotals.show(10) )
+    println("CL Totals:" + csDF.show(10) )
+
+
 
     val servTotals = abmDF.join(csDF, csDF("MEMBER_ID") === abmDF("MEMBER_ID") &&
-      coalesce(csDF("MEMBER_QUAL"), lit("''")) === coalesce(abmDF("MEMBER_QUAL"), lit("''")) &&
+      coalesce(csDF("MEMBER_QUAL"), lit("")) === coalesce(abmDF("MEMBER_QUAL"), lit("")) &&
       (csDF("CL_DATA_SRC") === abmDF("EN_DATA_SRC") || csDF("CL_DATA_SRC") === lit("*") || abmDF("EN_DATA_SRC") === lit("*")) &&
-      year(csDF("FROM_DATE")) === abmDF("YEAR_MO")
+      concat(substring(csDF("FROM_DATE").cast(DataTypes.StringType),1,4),substring(csDF("FROM_DATE").cast(DataTypes.StringType),6,2)) === abmDF("YEAR_MO").cast(DataTypes.StringType)
       , "left_outer"
        )
       .join(ptDF, abmDF("PAYER_TYPE") === ptDF("PAYER_TYPE"), "left_outer")
@@ -51,10 +62,8 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
         sum(csDF("MEMBER_PAID")).as("COST_SHARE")
       )
 
-
     val etDF = enrollTotals
     val stDF = servTotals
-
 
     val outputDF = etDF.join(stDF, (etDF("DATA_SOURCE") === lit("*") || stDF("CL_DATA_SRC") === lit("*") || etDF("DATA_SOURCE") === stDF("CL_DATA_SRC")) &&
                                    etDF("YEAR_MO") === concat(year(stDF("YEAR_MO").cast(DataTypes.StringType)).cast(DataTypes.StringType),(month(stDF("YEAR_MO").cast(DataTypes.StringType)).cast(DataTypes.StringType)))  &&
@@ -76,7 +85,7 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
                         )
 
 
-    return outputDF.persist()
+    return outputDF
 
 
   }

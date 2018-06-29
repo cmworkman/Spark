@@ -13,7 +13,7 @@ class Audit_Member_Years_Populate (ss: SparkSession, miConfig: MIConfig, auditB_
 
     // this is awkard, but Spark doesn't support groupBy's without an agg
     val outputDF =
-      ammDF.select(ammDF("EN_DATA_SRC"), ammDF("MEMBER_ID"), coalesce(ammDF("MEMBER_QUAL"),lit("''")), substring(ammDF("YEAR_MO").cast(DataTypes.StringType),0,4).as("YEAR_MO"), lit(1).as("TOTAL_MEMBER_YEARS")).distinct()
+      ammDF.select(ammDF("EN_DATA_SRC"), ammDF("MEMBER_ID"), coalesce(ammDF("MEMBER_QUAL"),lit("")), substring(ammDF("YEAR_MO").cast(DataTypes.StringType),0,4).as("YEAR_MO"), lit(1).as("TOTAL_MEMBER_YEARS")).distinct()
 
     return outputDF
   }

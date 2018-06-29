@@ -37,12 +37,14 @@ class Populate_Audit_B_Claims_RowType(ss: SparkSession, miConfig: MIConfig, base
       when(clDF("FROM_DATE").isin(miConfig.proxyNullDates: _*) || clDF("FROM_DATE").isin(miConfig.proxyOpenDates: _*), "-NULL-").otherwise(coalesce(clDF("FROM_DATE"), clDF("DIS_DATE"))).as("SVYEARMO")
     )
 
-    val outputDF = bcDF.groupBy(bcDF("DATA_SOURCE"), bcDF("CLAIM_ID"))
-      .agg(max(bcDF("member_qual")).as("MEMBER_QUAL"), max(bcDF("member_id")).as("MEMBER_ID"),
-        sum(bcDF("AMT_BILLED")).as("AMT_BILLED"), sum(bcDF("AMT_PAID")).as("AMT_PAID"), sum(bcDF("AMT_ALLOWED")).as("AMT_ALLOWED"), sum(bcDF("AMT_DEDUCT")).as("AMT_DEDUCT"), sum(bcDF("AMT_COPAY")).as("AMT_COPAY"), sum(bcDF("AMT_COINS")).as("AMT_COINS"), sum(bcDF("AMT_COB")).as("AMT_COB"),
-        min(bcDF("ROW_TYPE")).as("ROW_TYPE"), min(bcDF("SVYEARMO")).as("SVYEARMO"),
-        count(bcDF("ROW_TYPE")).as("LINES")
+
+    val outputDF = bcDF.groupBy("DATA_SOURCE", "CLAIM_ID")
+      .agg(max("member_qual").as("MEMBER_QUAL"), max("member_id").as("MEMBER_ID"),
+        sum("AMT_BILLED").as("AMT_BILLED"), sum("AMT_PAID").as("AMT_PAID"), sum("AMT_ALLOWED").as("AMT_ALLOWED"), sum("AMT_DEDUCT").as("AMT_DEDUCT"), sum("AMT_COPAY").as("AMT_COPAY"), sum(("AMT_COINS")).as("AMT_COINS"), sum(("AMT_COB")).as("AMT_COB"),
+        min("ROW_TYPE").as("ROW_TYPE"), min("SVYEARMO").as("SVYEARMO"),
+        count("ROW_TYPE").as("LINES")
       )
+
 
     return outputDF
 

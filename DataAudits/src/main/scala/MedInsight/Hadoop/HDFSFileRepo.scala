@@ -5,12 +5,13 @@ package MedInsight.Hadoop
   */
 
 trait HDFS {
-  def baseLoc = "wasb:///HDFS/"
+  //def baseLoc = "wasb:///HDFS/"
+  def baseLoc = "wasb://workcluster2@workmanstorage.blob.core.windows.net/"
 }
 
 trait ReferenceData extends HDFS {
-  def rloc              = baseLoc + "ReferenceDatasets/"
-  def RFT_DATES         = rloc + "DATES_TEST.bcp"
+  def rloc              = baseLoc + "RefDataSets/"
+  def RFT_DATES         = rloc + "RFT_DATES.bcp"
   def RFT_DIS_STAT      = rloc + "RFT_DIS_STAT.bcp"
   def RFT_ICD9_DIAG     = rloc + "RFT_ICD9_DIAG.bcp"
   def RFT_ICD9_PROC     = rloc + "RFT_ICD9_PROC.bcp"

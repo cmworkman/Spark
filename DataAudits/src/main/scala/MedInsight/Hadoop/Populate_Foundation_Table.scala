@@ -23,7 +23,7 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
 /*    println("lotDF Totals:" + lobDF.show(10) )
     println("ptDF Totals:" + ptDF.show(10) )
     println("consPayer Totals:" + consPayerDF.show(10) )*/
-    println("ABM Totals:" + abmDF.show(10) )
+/*    println("ABM Totals:" + abmDF.show(10) )*/
     //return consPayerDF
 
 
@@ -34,8 +34,8 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
       )
       .agg(sum(lit(1)).as("MEMBER_MONTHS"))
 
-    println("Enroll Totals:" + enrollTotals.show(10) )
-    println("CL Totals:" + csDF.show(10) )
+/*    println("Enroll Totals:" + enrollTotals.show(10) )
+    println("CL Totals:" + csDF.show(10) )*/
 
 
 
@@ -78,7 +78,7 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
                           sum(stDF("COST_SHARE")).as("COST_SHARE"),
                           sum(stDF("AMT_COB")).as("AMT_COB"),
                           sum(stDF("AMT_PAID")).as("AMT_PAID"),
-                          when(sum(stDF("AMT_ALLOWED")) === lit(0), lit(0)).otherwise(sum(stDF("AMT_ALLOWED")) - (sum(stDF("AMT_PAID")) + sum(stDF("AMT_COB")) + sum(stDF("COST_SHARE")) )/(sum(stDF("AMT_ALLOWED")))).as("REC_PER_MM"),
+                          when(sum(stDF("AMT_ALLOWED")) === lit(0), lit(0)).otherwise(sum(stDF("AMT_ALLOWED")) - (sum(stDF("AMT_PAID")) + sum(stDF("AMT_COB")) + sum(stDF("COST_SHARE")) )/(sum(stDF("AMT_ALLOWED")))).as("ALLOWED_CHECK"),
                           when(sum(etDF("MEMBER_MONTHS")) === lit(0), lit(0)).otherwise(sum(stDF("AMT_ALLOWED"))/sum(etDF("MEMBER_MONTHS"))).as("ALLOW_PMPM"),
                           when(sum(stDF("AMT_BILLED")) === lit(0), lit(0)).otherwise(sum(stDF("AMT_ALLOWED"))/sum(stDF("AMT_BILLED"))).as("ALLOWED_BILLED"),
                           when(sum(stDF("AMT_ALLOWED")) === lit(0), lit(0)).otherwise(sum(stDF("AMT_PAID"))/sum(stDF("AMT_ALLOWED"))).as("PAID_ALLOWED")

@@ -18,3 +18,13 @@ class HDFS_Reader(ss: SparkSession, filePath: String, schema: StructType){
       .load(filePath)
   }
 }
+
+class HDFS_Reader_Parq(ss: SparkSession, filePath: String){
+  def read(): DataFrame = {
+
+    return ss.read.parquet(filePath)
+/*      .option("sep", "|")
+      .schema(schema)
+      .load(filePath)*/
+  }
+}

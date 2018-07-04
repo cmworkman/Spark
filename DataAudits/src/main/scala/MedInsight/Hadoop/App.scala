@@ -134,7 +134,7 @@ object App {
 
     println("CSENR show:" + Claims_Summary_Enr_DF.show(100) )
 
-/*    val Audit_B_Member_Month_Enrollment_DF = new Populate_Audit_B_Member_Month_Enrollment_Table(sparkSession, miConfig, Base_Staging_Enrollment_DF, Claims_Summary_Enr_DF, Dates_DF, Base_Staging_Member_DF).populate()
+    val Audit_B_Member_Month_Enrollment_DF = new Populate_Audit_B_Member_Month_Enrollment_Table(sparkSession, miConfig, Base_Staging_Enrollment_DF, Claims_Summary_Enr_DF, Dates_DF, Base_Staging_Member_DF).populate()
 
     println("Audit B Member_Month Cnt:" + Audit_B_Member_Month_Enrollment_DF.show(10) )
 
@@ -148,9 +148,9 @@ object App {
     val Audit_Bill_Provider = new Audit_Bill_Provider_Populate(sparkSession, miConfig, Staging_Claimline_DF).populate()
     val Audit_Attending_Provider = new Audit_Attending_Provider_Populate(sparkSession, miConfig, Staging_Claimline_DF).populate()
 
-    val Foundation_Table = new Populate_Foundation_Table(sparkSession, miConfig, Payer_LOB_DF, Payer_Type_DF, Audit_B_Member_Month_Enrollment_DF, Claims_Summary_W_SID_DF ).populate()
+    val Foundation_Table = new Populate_Foundation_Table(sparkSession, miConfig, Payer_LOB_DF, Payer_Type_DF, Audit_B_Member_Month_Enrollment_DF, Claims_Summary_DF ).populate()
     dig = r.nextInt(1000).toString
-    println("Foundation Table Cnt:" + Foundation_Table.show(100) )*/
+    println("Foundation Table Cnt:" + Foundation_Table.show(100) )
   /*  Foundation_Table.limit(1000).toDF().write.option("header","true").csv("wasb://workcluster2@workmanstorage.blob.core.windows.net/Results/"+dig+".csv")*/
   }
 

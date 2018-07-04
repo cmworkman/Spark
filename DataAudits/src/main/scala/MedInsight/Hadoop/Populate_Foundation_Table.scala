@@ -52,7 +52,7 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
           .when((csDF("CL_DATA_SRC") === lit("*") || abmDF("EN_DATA_SRC") === lit("*")), lit("*"))
           .otherwise(csDF("CL_DATA_SRC")).as("CL_DATA_SRC"),
         coalesce(lobDF("PAYER_LOB"), lit("(unknown)")).as("PAYER_LOB"),
-        csDF("FROMDATE").as("YEAR_MO")
+        concat(csDF("FROMDATE")).as("YEAR_MO")
       )
       .agg(sum(csDF("CLAIMLINE_COUNT")).as("RECCNT"),
         sum(csDF("AMT_PAID")).as("AMT_PAID"),

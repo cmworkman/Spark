@@ -6,7 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/App.scala" line="148" mnemonic="9" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/App.scala" line="134" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6856f752-06e2-493a-a47c-75c693a4a6e1" name="Default" comment="" />
@@ -22,9 +22,9 @@
   <component name="FileEditorManager">
     <splitter split-orientation="horizontal" split-proportion="0.89454544">
       <split-first>
-        <splitter split-orientation="horizontal" split-proportion="0.8269054">
+        <splitter split-orientation="horizontal" split-proportion="0.28750983">
           <split-first>
-            <splitter split-orientation="horizontal" split-proportion="0.85888886">
+            <splitter split-orientation="horizontal" split-proportion="0.275">
               <split-first>
                 <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
                   <file leaf-file-name="Audit_Attending_Provider_Populate.scala" pinned="false" current-in-tab="false">
@@ -96,11 +96,11 @@
                       </provider>
                     </entry>
                   </file>
-                  <file leaf-file-name="Populate_Foundation_Table.scala" pinned="false" current-in-tab="true">
+                  <file leaf-file-name="Populate_Foundation_Table.scala" pinned="false" current-in-tab="false">
                     <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Foundation_Table.scala">
                       <provider selected="true" editor-type-id="text-editor">
-                        <state relative-caret-position="442">
-                          <caret line="54" column="32" lean-forward="false" selection-start-line="54" selection-start-column="32" selection-end-line="54" selection-end-column="32" />
+                        <state relative-caret-position="510">
+                          <caret line="30" column="80" lean-forward="false" selection-start-line="30" selection-start-column="80" selection-end-line="30" selection-end-column="80" />
                           <folding>
                             <element signature="e#27#89#0" expanded="true" />
                           </folding>
@@ -108,11 +108,11 @@
                       </provider>
                     </entry>
                   </file>
-                  <file leaf-file-name="Populate_Audit_B_Member_Month_Enrollment_Table.scala" pinned="false" current-in-tab="false">
+                  <file leaf-file-name="Populate_Audit_B_Member_Month_Enrollment_Table.scala" pinned="false" current-in-tab="true">
                     <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Audit_B_Member_Month_Enrollment_Table.scala">
                       <provider selected="true" editor-type-id="text-editor">
-                        <state relative-caret-position="272">
-                          <caret line="46" column="137" lean-forward="false" selection-start-line="46" selection-start-column="137" selection-end-line="46" selection-end-column="137" />
+                        <state relative-caret-position="1088">
+                          <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
                           <folding>
                             <element signature="e#27#80#0" expanded="true" />
                           </folding>
@@ -161,8 +161,8 @@
                   <file leaf-file-name="App.scala" pinned="false" current-in-tab="true">
                     <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/App.scala">
                       <provider selected="true" editor-type-id="text-editor">
-                        <state relative-caret-position="1054">
-                          <caret line="152" column="0" lean-forward="false" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
+                        <state relative-caret-position="871">
+                          <caret line="137" column="58" lean-forward="false" selection-start-line="137" selection-start-column="58" selection-end-line="137" selection-end-column="58" />
                           <folding>
                             <element signature="e#27#63#0" expanded="true" />
                           </folding>
@@ -200,11 +200,11 @@
           </split-first>
           <split-second>
             <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-              <file leaf-file-name="HDFSFileRepo.scala" pinned="false" current-in-tab="false">
+              <file leaf-file-name="HDFSFileRepo.scala" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/HDFSFileRepo.scala">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="136">
-                      <caret line="8" column="67" lean-forward="true" selection-start-line="8" selection-start-column="67" selection-end-line="8" selection-end-column="67" />
+                    <state relative-caret-position="119">
+                      <caret line="7" column="25" lean-forward="false" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
                       <folding />
                     </state>
                   </provider>
@@ -223,8 +223,8 @@
               <file leaf-file-name="Populate_Claims_Summary_For_Enrollment.scala" pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Claims_Summary_For_Enrollment.scala">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="136">
-                      <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+                    <state relative-caret-position="357">
+                      <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
                       <folding>
                         <element signature="e#27#80#0" expanded="true" />
                       </folding>
@@ -244,11 +244,11 @@
                   </provider>
                 </entry>
               </file>
-              <file leaf-file-name="Populate_Staging_Claimline.scala" pinned="false" current-in-tab="true">
+              <file leaf-file-name="Populate_Staging_Claimline.scala" pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Staging_Claimline.scala">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="272">
-                      <caret line="16" column="35" lean-forward="false" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
+                    <state relative-caret-position="952">
+                      <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
                       <folding>
                         <element signature="e#27#70#0" expanded="true" />
                       </folding>
@@ -265,8 +265,8 @@
           <file leaf-file-name="Populate_Claims_Summary.scala" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Claims_Summary.scala">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="238">
-                  <caret line="14" column="30" lean-forward="false" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+                <state relative-caret-position="425">
+                  <caret line="25" column="6" lean-forward="false" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
                   <folding>
                     <element signature="e#27#80#0" expanded="true" />
                   </folding>
@@ -287,22 +287,10 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>REC_PER</find>
-      <find>p</find>
-      <find>par</find>
-      <find>parti</find>
-      <find>partition</find>
-      <find>STAGING</find>
-      <find>STAGING_</find>
-      <find>STAGING_P</find>
-      <find>STAGING_PRE</find>
-      <find>STAGING_PREM</find>
-      <find>s</find>
       <find>su</find>
       <find>5,7</find>
       <find>5,</find>
       <find>5</find>
-      <find>S</find>
       <find>sub</find>
       <find>subs</find>
       <find>subst</find>
@@ -315,8 +303,20 @@
       <find>*</find>
       <find>con</find>
       <find>concat</find>
-      <find>c</find>
       <find>cast(</find>
+      <find>p</find>
+      <find>print</find>
+      <find>printlin</find>
+      <find>printli</find>
+      <find>printl</find>
+      <find>println</find>
+      <find>show</find>
+      <find>S</find>
+      <find>c</find>
+      <find>cser</find>
+      <find>cse</find>
+      <find>csr</find>
+      <find>cs</find>
     </findStrings>
     <replaceStrings>
       <replace>csDF</replace>
@@ -345,15 +345,15 @@
         <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/TestWork.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Audit_Member_Years_Populate.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/HDFS_Reader.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/HDFSFileRepo.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Audit_B_Claims_RowType.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Update_SubscriberID_For_ClaimSummary.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Claims_Summary_For_Enrollment.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Audit_B_Member_Month_Enrollment_Table.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Claims_Summary.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Staging_Claimline.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/App.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Foundation_Table.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/App.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Audit_B_Member_Month_Enrollment_Table.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Staging_Claimline.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Claims_Summary_For_Enrollment.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/HDFSFileRepo.scala" />
       </list>
     </option>
   </component>
@@ -365,10 +365,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-3848" />
-    <option name="y" value="-292" />
-    <option name="width" value="2576" />
-    <option name="height" value="1416" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -734,13 +734,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-3848" y="-292" width="2576" height="1416" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Azure Explorer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15313935" sideWeight="0.4984375" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2114165" sideWeight="0.4984375" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14777948" sideWeight="0.5015625" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -750,7 +750,7 @@
       <window_info id="Azure Activity Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0484375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1359375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Spark Job in Cluster" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Remote Spark Job in Cluster" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
@@ -774,7 +774,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="scala-line">
           <url>file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Audit_B_Member_Month_Enrollment_Table.scala</url>
-          <line>86</line>
+          <line>78</line>
           <properties />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
@@ -1095,14 +1095,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/HDFSFileRepo.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="67" lean-forward="true" selection-start-line="8" selection-start-column="67" selection-end-line="8" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Audit_Claim_Lines_Populate.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -1147,20 +1139,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Claims_Summary.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="30" lean-forward="false" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
-          <folding>
-            <element signature="e#27#80#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Audit_B_Claims_RowType.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="62" lean-forward="false" selection-start-line="14" selection-start-column="62" selection-end-line="14" selection-end-column="62" />
+        <state relative-caret-position="630">
+          <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding>
             <element signature="e#27#80#0" expanded="true" />
           </folding>
@@ -1177,10 +1159,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Claims_Summary_For_Enrollment.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Foundation_Table.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+        <state relative-caret-position="510">
+          <caret line="30" column="80" lean-forward="false" selection-start-line="30" selection-start-column="80" selection-end-line="30" selection-end-column="80" />
+          <folding>
+            <element signature="e#27#89#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Audit_B_Member_Month_Enrollment_Table.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1088">
+          <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
           <folding>
             <element signature="e#27#80#0" expanded="true" />
           </folding>
@@ -1189,18 +1181,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Staging_Claimline.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="35" lean-forward="false" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
+        <state relative-caret-position="952">
+          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
           <folding>
             <element signature="e#27#70#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Audit_B_Member_Month_Enrollment_Table.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Claims_Summary.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="46" column="137" lean-forward="false" selection-start-line="46" selection-start-column="137" selection-end-line="46" selection-end-column="137" />
+        <state relative-caret-position="425">
+          <caret line="25" column="6" lean-forward="false" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
           <folding>
             <element signature="e#27#80#0" expanded="true" />
           </folding>
@@ -1209,21 +1201,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/App.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1054">
-          <caret line="152" column="0" lean-forward="false" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
+        <state relative-caret-position="871">
+          <caret line="137" column="58" lean-forward="false" selection-start-line="137" selection-start-column="58" selection-end-line="137" selection-end-column="58" />
           <folding>
             <element signature="e#27#63#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Foundation_Table.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/Populate_Claims_Summary_For_Enrollment.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="54" column="32" lean-forward="false" selection-start-line="54" selection-start-column="32" selection-end-line="54" selection-end-column="32" />
+        <state relative-caret-position="357">
+          <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding>
-            <element signature="e#27#89#0" expanded="true" />
+            <element signature="e#27#80#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/MedInsight/Hadoop/HDFSFileRepo.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="25" lean-forward="false" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -113,32 +113,18 @@ object App {
     val Payer_LOB_DF  = new HDFS_Reader(sparkSession, fileRepo.RFT_PAYER_LOB, new RFT_PAYER_LOB_Table().schema).read()
     val Payer_Type_DF = new HDFS_Reader(sparkSession, fileRepo.RFT_PAYER_TYPE, new RFT_PAYER_TYPE_Table().schema).read()
 
-
-
-    var dig = r.nextInt(2000).toString
     //let's calculate aggregates for each claim id (claim type, src, member id, month, dollar totals)
     val Audit_B_Claims_RowType_DF = new Populate_Audit_B_Claims_RowType(sparkSession, miConfig, Base_Staging_Claimline_DF).populate()
 
-/*    Audit_B_Claims_RowType_DF.limit(20).toDF().write.option("header","true").csv("wasb://workcluster2@workmanstorage.blob.core.windows.net/Results/"+dig+".csv")*/
     //basiscally a raw claimline pull
     val Staging_Claimline_DF      = new Populate_Staging_Claimline(sparkSession, miConfig, Audit_B_Claims_RowType_DF, Base_Staging_Claimline_DF).populate()
-    println("Staging Claimline Cnt:" + Staging_Claimline_DF.show(10) )
-    println("Audit B Claims RowType Cnt:" + Audit_B_Claims_RowType_DF.show(10) )
 
     //summary by claim id (very similar to Audit_B_Claims_RowType)
     val Claims_Summary_DF         = new Populate_Claims_Summary(sparkSession, miConfig, Staging_Claimline_DF).populate()
-    println("Claim Summary:" + Claims_Summary_DF.show(100) )
     //claimline count by yearmo and datasource (does datasrc actually vary by client?)
     val Claims_Summary_Enr_DF     = new Populate_Claims_Summary_For_Enrollment(sparkSession, miConfig, Claims_Summary_DF).populate()
-
-
-    println("CSENR show:" + Claims_Summary_Enr_DF.show(100) )
-
     val Audit_B_Member_Month_Enrollment_DF = new Populate_Audit_B_Member_Month_Enrollment_Table(sparkSession, miConfig, Base_Staging_Enrollment_DF, Claims_Summary_Enr_DF, Dates_DF, Base_Staging_Member_DF).populate()
 
-    println("Audit B Member_Month Cnt:" + Audit_B_Member_Month_Enrollment_DF.show(10) )
-
-    dig = r.nextInt(1000).toString
     val Claims_Summary_W_SID_DF  = new Update_SubscriberID_For_ClaimSummary(sparkSession, miConfig, Audit_B_Member_Month_Enrollment_DF, Claims_Summary_DF).populate()
 
 
@@ -149,9 +135,7 @@ object App {
     val Audit_Attending_Provider = new Audit_Attending_Provider_Populate(sparkSession, miConfig, Staging_Claimline_DF).populate()
 
     val Foundation_Table = new Populate_Foundation_Table(sparkSession, miConfig, Payer_LOB_DF, Payer_Type_DF, Audit_B_Member_Month_Enrollment_DF, Claims_Summary_DF ).populate()
-    dig = r.nextInt(1000).toString
-    println("Foundation Table Cnt:" + Foundation_Table.show(100) )
-  /*  Foundation_Table.limit(1000).toDF().write.option("header","true").csv("wasb://workcluster2@workmanstorage.blob.core.windows.net/Results/"+dig+".csv")*/
+    println("Foundation Table total: " + Foundation_Table.show(10))
   }
 
 }

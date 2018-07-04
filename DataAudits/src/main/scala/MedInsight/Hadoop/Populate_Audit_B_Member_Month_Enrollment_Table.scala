@@ -16,7 +16,6 @@ class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig
     val avgClaimCountByDataSourceDF = cseDF.groupBy(cseDF("CL_DATA_SRC"))
                                            .agg(avg(cseDF("RECCNT")).as("AVERAGE"))
 
-    println("Avg Clm Count by ds Totals:" + avgClaimCountByDataSourceDF.show(10) )
     // not only do we need the average claimline count over all of time by Data Source, we also need the claimline count by month (this is for two calcs below)
     val claimlinCountsWithOverTimeAverageByDataSource = avgClaimCountByDataSourceDF.join(cseDF,
                                     cseDF("CL_DATA_SRC") === avgClaimCountByDataSourceDF("CL_DATA_SRC")
@@ -29,16 +28,11 @@ class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig
     // of our over-all-of-time per-month average for that Data Source
     val clcwDF = claimlinCountsWithOverTimeAverageByDataSource
 
-    println("Over Time average:" + claimlinCountsWithOverTimeAverageByDataSource.show(10) )
     val dateRangeByDataSource = clcwDF.groupBy(clcwDF("CL_DATA_SRC"))
                   .agg(max(clcwDF("YEAR_MO")).as("MAX_YEARMO"),
                     max(((clcwDF("YEAR_MO")).cast(DataTypes.LongType) - lit(400))).as("MIN_YEARMO")
-/*                    max(add_months(clcwDF("YEAR_MO"), -47)).as("MIN_YEARMO") */
-
                   )
 
-/*    println("data range by datasrouce average:" + dateRangeByDataSource.show(10) )
-    return  dateRangeByDataSource.persist()*/
 
     // get dimensionality for every member's member month (jesus christ)
     val outputPreMemberDF = seDF.join(datesDF,datesDF("DATES") >= seDF("EFF_DATE") && datesDF("DATES") <= seDF("TERM_DATE") && datesDF("DAY_OF_MONTH") === lit(15) ,"inner")
@@ -56,9 +50,7 @@ class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig
                          max(seDF("PAYER_TYPE")).as("PAYER_TYPE"),max(seDF("GRP_ID")).as("GRP_ID"),max(seDF("PCP_PROV")).as("PCP_PROV")
                        )
 
-    println("pre member df:" + outputPreMemberDF.show(10) )
     val opmDF = outputPreMemberDF
-
     val outputDF = opmDF.join(smDF, smDF("MEMBER_ID") === opmDF("MEMBER_ID") &&
                           (coalesce(smDF("MEMBER_QUAL"), lit("")) === coalesce(opmDF("MEMBER_QUAL"), lit(""))) &&
                           (opmDF("EFF_DATE") >= coalesce(smDF("MEM_START_DATE"), to_date(lit("1900-01-01"))) && opmDF("EFF_DATE") <= coalesce(smDF("MEM_START_DATE"), to_date(lit("2099-12-31"))) ) &&
@@ -86,12 +78,6 @@ class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig
                 opmDF("GRP_ID"),
                 opmDF("PCP_PROV")
         )
-
-
-
-
-
-    //println("Sample output for  Populate_Claims_Summary_For_Enrollment" + dateRangeByDataSource.show(10))
     return outputDF.persist()
   }
 }

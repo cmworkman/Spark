@@ -14,7 +14,6 @@ class Populate_Claims_Summary_For_Enrollment(ss: SparkSession, miConfig: MIConfi
       .agg(sum(clDF("CLAIMLINE_COUNT")).as("RECCNT")
       )
 
-    //println("Sample output for  Populate_Claims_Summary_For_Enrollment" + outputDF.show(10))
     return outputDF
   }
 }

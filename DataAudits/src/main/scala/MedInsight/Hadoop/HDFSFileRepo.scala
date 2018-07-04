@@ -5,8 +5,8 @@ package MedInsight.Hadoop
   */
 
 trait HDFS {
-  //def baseLoc = "wasb:///HDFS/"
-  def baseLoc = "wasb://workcluster2@workmanstorage.blob.core.windows.net/"
+  def baseLoc = "wasb:///"
+  //def baseLoc = "wasb://workcluster2@workmanstorage.blob.core.windows.net/"
 }
 
 trait ReferenceData extends HDFS {

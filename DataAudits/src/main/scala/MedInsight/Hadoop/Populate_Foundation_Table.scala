@@ -18,25 +18,14 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
     val csDF = claimSummaryDF
 
     val consPayerDF = lobDF.join(ptDF, lobDF("PAYER_LOB_KEY") === ptDF("PAYER_LOB_KEY"), "left_outer")
-      .select(ptDF("PAYER_TYPE"), lobDF("PAYER_LOB")).distinct()
-
-    println("lotDF Totals:" + lobDF.show(10) )
-    println("ptDF Totals:" + ptDF.show(10) )
-    println("consPayer Totals:" + consPayerDF.show(10) )
-    println("ABM Totals:" + abmDF.show(10) )
-    //return consPayerDF
+      .select(trim(ptDF("PAYER_TYPE")).as("PAYER_TYPE"), lobDF("PAYER_LOB")).distinct()
 
 
-    val enrollTotals = abmDF.join(consPayerDF, consPayerDF("PAYER_TYPE") === abmDF("PAYER_TYPE"), "left_outer")
+    val enrollTotals = abmDF.join(consPayerDF, consPayerDF("PAYER_TYPE") === trim(abmDF("PAYER_TYPE")), "left_outer")
       .groupBy(abmDF("EN_DATA_SRC").as("DATA_SOURCE"), abmDF("YEAR_MO"),
-        consPayerDF("PAYER_LOB"),
-        coalesce(consPayerDF("PAYER_LOB"), lit("(unknown)"))
+        coalesce(consPayerDF("PAYER_LOB"), lit("(unknown)")).as("PAYER_LOB")
       )
       .agg(sum(lit(1)).as("MEMBER_MONTHS"))
-
-    println("Enroll Totals:" + enrollTotals.show(10) )
-    println("CL Totals:" + csDF.show(10) )
-
 
 
     val servTotals = abmDF.join(csDF, csDF("MEMBER_ID") === abmDF("MEMBER_ID") &&
@@ -45,7 +34,7 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
       csDF("FROMDATE") === abmDF("YEAR_MO").cast(DataTypes.StringType)
       , "left_outer"
        )
-      .join(ptDF, abmDF("PAYER_TYPE") === ptDF("PAYER_TYPE"), "left_outer")
+      .join(ptDF, trim(abmDF("PAYER_TYPE")) === trim(ptDF("PAYER_TYPE")), "left_outer")
       .join(lobDF, ptDF("PAYER_LOB_KEY") === lobDF("PAYER_LOB_KEY"), "left_outer")
       .groupBy(
         when(csDF("CL_DATA_SRC") === abmDF("EN_DATA_SRC"), csDF("CL_DATA_SRC"))
@@ -61,7 +50,6 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
         sum(csDF("AMT_COB")).as("AMT_COB"),
         sum(csDF("MEMBER_PAID")).as("COST_SHARE")
       )
-    println("Serv Totals:" + servTotals.show(10) )
 
     val etDF = enrollTotals
     val stDF = servTotals

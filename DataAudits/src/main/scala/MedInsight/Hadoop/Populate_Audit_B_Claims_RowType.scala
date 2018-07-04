@@ -1,7 +1,8 @@
 package MedInsight.Hadoop
 
 import org.apache.spark.sql.{DataFrame, SparkSession}
-import org.apache.spark.sql.functions._
+import org.apache.spark.sql.functions.{concat, _}
+import org.apache.spark.sql.types.DataTypes
 
 /**
   * Created by christopher.workman on 6/17/2018.
@@ -34,14 +35,19 @@ class Populate_Audit_B_Claims_RowType(ss: SparkSession, miConfig: MIConfig, base
       clDF("AMT_COB"),
       clDF("MEMBER_ID"),
       clDF("MEMBER_QUAL"),
-      when(clDF("FROM_DATE").isin(miConfig.proxyNullDates: _*) || clDF("FROM_DATE").isin(miConfig.proxyOpenDates: _*), "-NULL-").otherwise(coalesce(clDF("FROM_DATE"), clDF("DIS_DATE"))).as("SVYEARMO")
+      when(clDF("FROM_DATE").isin(miConfig.proxyNullDates: _*) || clDF("DIS_DATE").isin(miConfig.proxyOpenDates: _*), "-NULL-")
+        .otherwise(coalesce(
+          concat(substring(clDF("FROM_DATE").cast(DataTypes.StringType),1,4),substring(clDF("FROM_DATE").cast(DataTypes.StringType),6,2)),
+          concat(substring(clDF("DIS_DATE").cast(DataTypes.StringType),1,4),substring(clDF("DIS_DATE").cast(DataTypes.StringType),6,2)))
+        )
+        .as("SVYEARMO")
     )
 
 
     val outputDF = bcDF.groupBy("DATA_SOURCE", "CLAIM_ID")
       .agg(max("member_qual").as("MEMBER_QUAL"), max("member_id").as("MEMBER_ID"),
         sum("AMT_BILLED").as("AMT_BILLED"), sum("AMT_PAID").as("AMT_PAID"), sum("AMT_ALLOWED").as("AMT_ALLOWED"), sum("AMT_DEDUCT").as("AMT_DEDUCT"), sum("AMT_COPAY").as("AMT_COPAY"), sum(("AMT_COINS")).as("AMT_COINS"), sum(("AMT_COB")).as("AMT_COB"),
-        min("ROW_TYPE").as("ROW_TYPE"), min("SVYEARMO").as("SVYEARMO"),
+        min("ROW_TYPE").as("ROW_TYPE"), min(bcDF("SVYEARMO")).as("SVYEARMO"),
         count("ROW_TYPE").as("LINES")
       )
 

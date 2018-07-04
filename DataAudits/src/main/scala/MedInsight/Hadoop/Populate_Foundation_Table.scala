@@ -20,10 +20,10 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
     val consPayerDF = lobDF.join(ptDF, lobDF("PAYER_LOB_KEY") === ptDF("PAYER_LOB_KEY"), "left_outer")
       .select(ptDF("PAYER_TYPE"), lobDF("PAYER_LOB")).distinct()
 
-/*    println("lotDF Totals:" + lobDF.show(10) )
+    println("lotDF Totals:" + lobDF.show(10) )
     println("ptDF Totals:" + ptDF.show(10) )
-    println("consPayer Totals:" + consPayerDF.show(10) )*/
-/*    println("ABM Totals:" + abmDF.show(10) )*/
+    println("consPayer Totals:" + consPayerDF.show(10) )
+    println("ABM Totals:" + abmDF.show(10) )
     //return consPayerDF
 
 
@@ -34,15 +34,15 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
       )
       .agg(sum(lit(1)).as("MEMBER_MONTHS"))
 
-/*    println("Enroll Totals:" + enrollTotals.show(10) )
-    println("CL Totals:" + csDF.show(10) )*/
+    println("Enroll Totals:" + enrollTotals.show(10) )
+    println("CL Totals:" + csDF.show(10) )
 
 
 
     val servTotals = abmDF.join(csDF, csDF("MEMBER_ID") === abmDF("MEMBER_ID") &&
       coalesce(csDF("MEMBER_QUAL"), lit("")) === coalesce(abmDF("MEMBER_QUAL"), lit("")) &&
       (csDF("CL_DATA_SRC") === abmDF("EN_DATA_SRC") || csDF("CL_DATA_SRC") === lit("*") || abmDF("EN_DATA_SRC") === lit("*")) &&
-      concat(substring(csDF("FROM_DATE").cast(DataTypes.StringType),1,4),substring(csDF("FROM_DATE").cast(DataTypes.StringType),6,2)) === abmDF("YEAR_MO").cast(DataTypes.StringType)
+      csDF("FROMDATE") === abmDF("YEAR_MO").cast(DataTypes.StringType)
       , "left_outer"
        )
       .join(ptDF, abmDF("PAYER_TYPE") === ptDF("PAYER_TYPE"), "left_outer")
@@ -52,7 +52,7 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
           .when((csDF("CL_DATA_SRC") === lit("*") || abmDF("EN_DATA_SRC") === lit("*")), lit("*"))
           .otherwise(csDF("CL_DATA_SRC")).as("CL_DATA_SRC"),
         coalesce(lobDF("PAYER_LOB"), lit("(unknown)")).as("PAYER_LOB"),
-        csDF("FROM_DATE").as("YEAR_MO")
+        csDF("FROMDATE").as("YEAR_MO")
       )
       .agg(sum(csDF("CLAIMLINE_COUNT")).as("RECCNT"),
         sum(csDF("AMT_PAID")).as("AMT_PAID"),
@@ -61,12 +61,13 @@ class Populate_Foundation_Table(ss: SparkSession, miConfig: MIConfig, payerLobDF
         sum(csDF("AMT_COB")).as("AMT_COB"),
         sum(csDF("MEMBER_PAID")).as("COST_SHARE")
       )
+    println("Serv Totals:" + servTotals.show(10) )
 
     val etDF = enrollTotals
     val stDF = servTotals
 
     val outputDF = etDF.join(stDF, (etDF("DATA_SOURCE") === lit("*") || stDF("CL_DATA_SRC") === lit("*") || etDF("DATA_SOURCE") === stDF("CL_DATA_SRC")) &&
-                                   etDF("YEAR_MO") === concat(year(stDF("YEAR_MO").cast(DataTypes.StringType)).cast(DataTypes.StringType),(month(stDF("YEAR_MO").cast(DataTypes.StringType)).cast(DataTypes.StringType)))  &&
+                                   etDF("YEAR_MO") === stDF("YEAR_MO")  &&
                                    etDF("PAYER_LOB") === stDF("PAYER_LOB"), "right_outer"
                             )
                          .groupBy(coalesce(etDF("DATA_SOURCE"),stDF("CL_DATA_SRC")).as("DATA_SOURCE"), stDF("PAYER_LOB"), stDF("YEAR_MO"))

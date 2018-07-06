@@ -54,6 +54,6 @@ class Populate_Staging_Claimline (ss: SparkSession, miConfig: MIConfig, auditDF 
         bsDF("RX_DAYS_SUPPLY"),
         bsDF("NDC"))
 
-    return outputDF.persist()
+    return outputDF
   }
 }

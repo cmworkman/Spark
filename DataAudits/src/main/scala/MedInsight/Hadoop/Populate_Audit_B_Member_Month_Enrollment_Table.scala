@@ -35,12 +35,25 @@ class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig
 
 
     // get dimensionality for every member's member month (jesus christ)
-    val outputPreMemberDF = seDF.join(datesDF,datesDF("DATES") >= seDF("EFF_DATE") && datesDF("DATES") <= seDF("TERM_DATE") && datesDF("DAY_OF_MONTH") === lit(15) ,"inner")
+    val outputPreMemberDF =
+/*                        seDF.join(datesDF,datesDF("DATES") >= seDF("EFF_DATE") && datesDF("DATES") <= seDF("TERM_DATE") && datesDF("DAY_OF_MONTH") === lit(15) ,"inner")*/
+/*                        seDF.join(datesDF,datesDF("YEARMO") ===  concat(substring(seDF("EFF_DATE").cast(DataTypes.StringType),1,4),substring(seDF("EFF_DATE").cast(DataTypes.StringType),6,2)) && datesDF("DAY_OF_MONTH") === lit(15) ,"inner")
                        .join(dateRangeByDataSource,(seDF("EN_DATA_SRC") ===  dateRangeByDataSource("CL_DATA_SRC") || seDF("EN_DATA_SRC") === "*" || dateRangeByDataSource("CL_DATA_SRC") === "*")
                           && (datesDF("YEAR_MO").cast(DataTypes.StringType) >= dateRangeByDataSource("MIN_YEARMO").cast(DataTypes.StringType) ) &&
                           datesDF("YEAR_MO").cast(DataTypes.StringType) <= dateRangeByDataSource("MAX_YEARMO").cast(DataTypes.StringType)
+                        ,"inner")*/
+                    seDF.
+/*                      join(
+                      datesDF,datesDF("YEAR_MO") ===  concat(substring(seDF("EFF_DATE").cast(DataTypes.StringType),1,4),substring(seDF("EFF_DATE").cast(DataTypes.StringType),6,2)) && datesDF("DAY_OF_MONTH") === lit(15) ,"inner")*/
+                      join(dateRangeByDataSource,(seDF("EN_DATA_SRC") ===  dateRangeByDataSource("CL_DATA_SRC") || seDF("EN_DATA_SRC") === "*" || dateRangeByDataSource("CL_DATA_SRC") === "*")
                         ,"inner")
-                       .groupBy(seDF("EN_DATA_SRC"),seDF("MEMBER_ID"),seDF("EFF_DATE"),seDF("SUBSCRIBER_ID"),datesDF("YEAR_MO"),datesDF("FIRST_DATE_IN_MONTH"),datesDF("LAST_DATE_IN_MONTH"),coalesce(seDF("MEMBER_QUAL"),lit("")).as("MEMBER_QUAL")
+                       .groupBy(seDF("EN_DATA_SRC"),seDF("MEMBER_ID"),seDF("EFF_DATE"),seDF("SUBSCRIBER_ID"),
+/*                         datesDF("YEAR_MO"),*/
+                         concat(substring(seDF("EFF_DATE").cast(DataTypes.StringType),1,4),substring(seDF("EFF_DATE").cast(DataTypes.StringType),6,2)).as("YEAR_MO"),
+                         concat(substring(seDF("EFF_DATE").cast(DataTypes.StringType),1,4),lit("-"),substring(seDF("EFF_DATE").cast(DataTypes.StringType),6,2),lit("-01")).as("FIRST_DATE_IN_MONTH"),
+/*                         datesDF("FIRST_DATE_IN_MONTH"),*/
+/*                         datesDF("LAST_DATE_IN_MONTH"),*/
+                         coalesce(seDF("MEMBER_QUAL"),lit("")).as("MEMBER_QUAL")
                         )
                        .agg(max(seDF("MI_USER_DIM_01_")).as("MI_USER_DIM_01_"),max(seDF("MI_USER_DIM_02_")).as("MI_USER_DIM_02_"),
                          max(seDF("MI_USER_DIM_03_")).as("MI_USER_DIM_03_"),max(seDF("MI_USER_DIM_04_")).as("MI_USER_DIM_04_"),
@@ -50,7 +63,8 @@ class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig
                          max(seDF("PAYER_TYPE")).as("PAYER_TYPE"),max(seDF("GRP_ID")).as("GRP_ID"),max(seDF("PCP_PROV")).as("PCP_PROV")
                        )
 
-    val opmDF = outputPreMemberDF
+    return outputPreMemberDF
+/*    val opmDF = outputPreMemberDF
     val outputDF = opmDF.join(smDF, smDF("MEMBER_ID") === opmDF("MEMBER_ID") &&
                           (coalesce(smDF("MEMBER_QUAL"), lit("")) === coalesce(opmDF("MEMBER_QUAL"), lit(""))) &&
                           (opmDF("EFF_DATE") >= coalesce(smDF("MEM_START_DATE"), to_date(lit("1900-01-01"))) && opmDF("EFF_DATE") <= coalesce(smDF("MEM_START_DATE"), to_date(lit("2099-12-31"))) ) &&
@@ -78,6 +92,6 @@ class Populate_Audit_B_Member_Month_Enrollment_Table (ss: SparkSession, miConfig
                 opmDF("GRP_ID"),
                 opmDF("PCP_PROV")
         )
-    return outputDF.persist()
+    return outputDF*/
   }
 }
